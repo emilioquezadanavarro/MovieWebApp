@@ -6,10 +6,7 @@
     <!-- Back button -->
     <p><a href="{{ url_for('index') }}" class="back-link">← Back to Users</a></p>
 
-    <!-- Header -->
-    <h2 class="page-header">Movies for {{ user.name }}</h2>
-
-    <!-- Flash Messages (Ensures feedback is visible on this page) -->
+    <!-- FLASH MESSAGE DISPLAY BLOCK -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
@@ -20,9 +17,11 @@
     {% endif %}
     {% endwith %}
 
+    <!-- Header -->
+    <h2 class="page-header">Movies for {{ user.name }}</h2>
     <!-- Add Movie Form Placeholder (Route 4) -->
     <div class="add-movie-section">
-        <h3>Add New Movie</h3>
+        <h3>Add New Movie ➕</h3>
         <!-- Form submits the title to the POST route for processing -->
         <form method="POST" action="{{ url_for('add_movie_to_user', user_id=user.id) }}" class="form-container">
             <div class="form-group">

@@ -3,12 +3,24 @@
 {% block title %}User Selection{% endblock %}
 
 {% block content %}
-    <h2 class="page-title">Select User Identity</h2>
+
+    <!-- FLASH MESSAGE DISPLAY BLOCK -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="flashes {{ category }}">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <h2 class="page-title">Select User ⬇️</h2>
 
     <div class="user-layout-container">
         <!-- User List Section -->
         <div class="user-list-section">
-            <h3>Registered Users</h3>
+            <h3>Registered Users ✅</h3>
             {% if users %}
             <ul class="user-list">
                 {% for user in users %}
@@ -27,7 +39,7 @@
 
         <!-- User Creation Form Section -->
         <div class="user-creation-section">
-            <h3>Create New User</h3>
+            <h3>Create New User ➕</h3>
             <!-- Form will target the POST route -->
             <form method="POST" action="{{ url_for('add_user') }}" class="form-container">
                 <div class="form-group">
