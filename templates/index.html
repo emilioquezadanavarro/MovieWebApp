@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}User Selection{% endblock %}
+
+{% block content %}
+    <h2 class="page-title">Select User Identity</h2>
+
+    <div class="user-layout-container">
+        <!-- User List Section -->
+        <div class="user-list-section">
+            <h3>Registered Users</h3>
+            {% if users %}
+            <ul class="user-list">
+                {% for user in users %}
+                    <!-- Link to the user's movie list -->
+                    <li class="user-list-item">
+                        <a href="{{ url_for('user_movies', user_id=user.id) }}" class="user-link">
+                            {{ user.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <div class="alert-info form-container">No users registered yet. Create a new user below!</div>
+            {% endif %}
+        </div>
+
+        <!-- User Creation Form Section -->
+        <div class="user-creation-section">
+            <h3>Create New User</h3>
+            <!-- Form will target the POST route -->
+            <form method="POST" action="{{ url_for('add_user') }}" class="form-container">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                </div>
+                <button type="submit" class="btn-primary">Create User</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Applying basic flex styles to the layout container for alignment -->
+    <style>
+        .page-title { margin-bottom: 20px; }
+        .user-layout-container {
+            display: flex;
+            gap: 40px;
+            padding-bottom: 50px;
+        }
+        .user-list-section, .user-creation-section {
+            flex: 1;
+            min-width: 300px;
+        }
+    </style>
+{% endblock %}
