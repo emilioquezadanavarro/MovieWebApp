@@ -3,6 +3,9 @@ from data_manager import DataManager
 from models import db, User, Movie
 import os
 from dotenv import load_dotenv
+import json
+from datetime import datetime
+import requests
 
 # Load the environment variables from .env file
 load_dotenv()
@@ -10,6 +13,38 @@ load_dotenv()
 # Constants for API
 API_KEY = os.environ.get('OMDB_API_KEY')
 API_URL = "http://omdbapi.com/"
+
+# Helper function for API calls
+def fetch_movie_data(title):
+    """
+    Fetches data for a movie from OMDb.
+    """
+
+    try:
+
+        params = {
+            "t": title,
+            "apikey": API_KEY
+        }
+        response = requests.get(API_URL, params=params)
+        response.raise_for_status() # Raise an error in case of 404, 500
+
+        data = response.json()
+
+        #Check if API found the movie
+        if data.get('Response') == 'True':
+            return data
+        else:
+            print("No movie data found")
+            return None
+
+    except requests.exceptions.RequestException as e:
+        # Handle network errors
+        print(f"Connection error: {e}")
+        return None
+    except json.JSONDecodeError:
+        print(f"Could not decode API response")
+        return None
 
 # Setting up flask app
 app = Flask(__name__)
@@ -71,8 +106,46 @@ def user_movies(user_id):
     return render_template('movies.html',user=user ,movies=movies)
 
 @app.route('/users/<int:user_id>/movies', methods=['POST'])
-def add_movie_to_user():
-    pass
+def add_movie_to_user(user_id):
+
+    movie_title_input = request.form.get('movie_title')
+    movie_data = fetch_movie_data(movie_title_input)
+
+    if movie_data is None:
+        flash("Movie not found or API error.", 'error')
+        return redirect(url_for('user_movies', user_id=user_id))
+
+    try:
+        name = movie_data.get('Title')
+        director = movie_data.get('Director')
+        year = int(movie_data.get('Year'))
+
+        # Validation Check to ensure year is reasonable
+        if year < 1888 or year > datetime.now().year:
+
+            # We raise a ValueError so the execution jumps to the except block
+            raise ValueError("Year is out of range")  # Custom error for invalid year range
+
+        poster_url = movie_data.get('Poster')
+
+        # Handle N/A poster data
+        if poster_url == 'N/A':
+            poster_url = 'https://via.placeholder.com/200x300?text=No+Poster'
+
+    except (ValueError, TypeError):
+        # Catches failures from int() conversion OR our custom ValueError
+        flash("Error: Movie data received from API was invalid or year is outside a valid range", 'error')
+        return redirect(url_for('user_movies', user_id=user_id))
+
+    # Save to database using DataManager
+    data_manager.add_movie(name, director, year, poster_url,user_id)
+
+    # Success feedback
+    flash(f"Movie '{name}' added successfully!", 'success')
+
+    # Redirect to the GET route
+    return redirect(url_for('user_movies', user_id=user_id))
+
 
 @app.route('/users/<int:user_id>/movies/<int:movie_id>/update', methods=['POST'])
 def update_movie_title_on_user_list():
