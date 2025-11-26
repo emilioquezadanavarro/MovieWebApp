@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from data_manager import DataManager
 from models import db, User, Movie
 import os
@@ -20,7 +20,28 @@ data_manager = DataManager()
 # Routes
 @app.route('/')
 def home():
-    return "Welcome to MoviWeb App!"
+    users = data_manager.get_users()
+    return render_template('index.html', users=users)
+
+@app.route('/users', methods=['POST'])
+def add_user():
+    pass
+
+@app.route('/users/<int:user_id>/movies', methods=['GET'])
+def user_movies():
+    pass
+
+@app.route('/users/<int:user_id>/movies', methods=['POST'])
+def add_movie_to_user():
+    pass
+
+@app.route('/users/<int:user_id>/movies/<int:movie_id>/update', methods=['POST'])
+def update_movie_title_on_user_list():
+    pass
+
+@app.route('/users/<int:user_id>/movies/<int:movie_id>/delete', methods=['POST'])
+def delete_movie_on_user_list():
+    pass
 
 # Creating the data base with ORM
 def create_database_tables():
