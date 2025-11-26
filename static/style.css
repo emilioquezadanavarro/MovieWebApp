@@ -35,37 +35,33 @@ body {
     padding: 0 15px;
 }
 
-/* --- 3. User List Styling --- */
-.user-list {
-    list-style: none;
-    padding: 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.user-list-item {
+/* --- 3. Flashed Message Styling --- */
+.flashes {
+    max-width: 1200px;
+    margin: 10px auto;
     padding: 15px;
-    border-bottom: 1px solid #eee;
-    background-color: white;
+    border-radius: 4px;
+    text-align: center;
+    list-style: none;
+    font-weight: bold;
 }
+.flashes.success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.flashes.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-.user-list-item:last-child {
-    border-bottom: none;
+
+/* --- 4. User List & Forms (Index Page) --- */
+.user-list-section, .user-creation-section {
+    flex: 1;
+    min-width: 300px;
 }
-
-.user-link {
-    color: #007bff;
-    text-decoration: none;
-    font-size: 1.1em;
-    display: block;
-}
-
-.user-link:hover {
-    text-decoration: underline;
-}
+.user-list { list-style: none; padding: 0; border: 1px solid #ddd; border-radius: 4px; }
+.user-list-item { padding: 15px; border-bottom: 1px solid #eee; background-color: white; }
+.user-list-item:last-child { border-bottom: none; }
+.user-link { color: #007bff; text-decoration: none; font-size: 1.1em; display: block; }
+.user-link:hover { text-decoration: underline; }
 
 
-/* --- 4. Form Styling  --- */
+/* --- 5. Forms (General Styles) --- */
 .form-container {
     background: white;
     padding: 20px;
@@ -73,22 +69,15 @@ body {
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
-
-.form-label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
+.form-label { display: block; margin-bottom: 5px; font-weight: bold; }
 .form-control {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box; /* Ensures padding doesn't increase total width */
+    box-sizing: border-box;
 }
-
 .btn-primary {
     background-color: #007bff;
     color: white;
@@ -98,7 +87,90 @@ body {
     cursor: pointer;
     font-size: 1em;
 }
+.btn-primary:hover { background-color: #0056b3; }
 
-.btn-primary:hover {
-    background-color: #0056b3;
+
+/* --- 6. Movie List Styles (movies.html) --- */
+
+.page-header {
+    margin-top: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 10px;
+}
+.back-link {
+    display: block;
+    margin-bottom: 20px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.movie-grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.movie-card {
+    width: 200px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    padding-bottom: 10px;
+}
+
+.movie-poster {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.movie-details-box {
+    padding: 10px;
+}
+
+.movie-title-year h4 {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.movie-year, .movie-director {
+    display: block;
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.movie-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-update, .btn-delete {
+    padding: 5px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    text-align: center;
+    font-size: 0.9em;
+    width: 50%;
+    display: block;
+}
+
+.btn-update {
+    background-color: #ffc107; /* Yellow */
+    color: #333;
+    border: none;
+}
+.btn-delete {
+    background-color: #dc3545; /* Red */
+    color: white;
+    border: none;
+}
+.delete-form {
+    display: inline;
+    width: 50%;
 }
