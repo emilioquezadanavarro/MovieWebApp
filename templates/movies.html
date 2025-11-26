@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Movies for {{ user.name }}{% endblock %}
+
+{% block content %}
+    <!-- Back button -->
+    <p><a href="{{ url_for('index') }}" class="back-link">← Back to Users</a></p>
+
+    <!-- Header -->
+    <h2 class="page-header">Movies for {{ user.name }}</h2>
+
+    <!-- Flash Messages (Ensures feedback is visible on this page) -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="flashes {{ category }}">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <!-- Add Movie Form Placeholder (Route 4) -->
+    <div class="add-movie-section">
+        <h3>Add New Movie</h3>
+        <!-- Form submits the title to the POST route for processing -->
+        <form method="POST" action="{{ url_for('add_movie_to_user', user_id=user.id) }}" class="form-container">
+            <div class="form-group">
+                <label for="movie_title" class="form-label">Movie Title</label>
+                <input type="text" class="form-control" id="movie_title" name="movie_title" required>
+            </div>
+            <button type="submit" class="btn-primary">Fetch & Add Movie</button>
+        </form>
+    </div>
+
+    <!-- Movie Grid -->
+    <div class="movie-grid-container">
+        {% if movies %}
+            {% for movie in movies %}
+            <div class="movie-card">
+                <!-- Poster -->
+                <img class="movie-poster" src="{{ movie.poster_url }}" alt="{{ movie.name }} Poster" onerror="this.onerror=null; this.src='https://via.placeholder.com/200x300?text=No+Poster';">
+
+                <!-- Details -->
+                <div class="movie-details-box">
+                    <div class="movie-title-year">
+                        <h4>{{ movie.name }}</h4>
+                        <span class="movie-year">Year: {{ movie.year }}</span>
+                    </div>
+
+                    <span class="movie-director">Director: {{ movie.director }}</span>
+
+                    <!-- Update/Delete Forms (Routes 5 & 6) -->
+                    <div class="movie-actions">
+                        <!-- Update Form placeholder -->
+                        <a href="#" class="btn-update">Update</a>
+
+                        <!-- Delete Form -->
+                        <form method="POST" action="{{ url_for('delete_movie_on_user_list', user_id=user.id, movie_id=movie.id) }}" class="delete-form">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert-info form-container">This user has no movies yet. Add one above!</div>
+        {% endif %}
+    </div>
+{% endblock %}
