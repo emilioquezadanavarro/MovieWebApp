@@ -51,8 +51,8 @@
 
                     <!-- Update/Delete Forms (Routes 5 & 6) -->
                     <div class="movie-actions">
-                        <!-- Update Form placeholder -->
-                        <a href="#" class="btn-update">Update</a>
+                        <!-- Update Form -->
+                        <a href="{{ url_for('update_movie_title_on_user_list', user_id=user.id, movie_id=movie.id) }}" class="btn-update">Update</a>
 
                         <!-- Delete Form -->
                         <form method="POST" action="{{ url_for('delete_movie_on_user_list', user_id=user.id, movie_id=movie.id) }}" class="delete-form">
