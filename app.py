@@ -147,9 +147,45 @@ def add_movie_to_user(user_id):
     return redirect(url_for('user_movies', user_id=user_id))
 
 
-@app.route('/users/<int:user_id>/movies/<int:movie_id>/update', methods=['POST'])
-def update_movie_title_on_user_list():
-    pass
+@app.route('/users/<int:user_id>/movies/<int:movie_id>/update', methods=['GET','POST'])
+def update_movie_title_on_user_list(user_id, movie_id):
+
+    # Fetch data for display (GET) or verification (POST)
+    user, movies = data_manager.get_movies(user_id)
+
+    if user is None:
+        flash("User not found", 'error')
+        return redirect(url_for('index'))
+
+    # Using next function to find the match and stops immediately. Otherwise, returns None
+    movie_to_update = next((m for m in movies if m.id == movie_id), None)
+
+    if movie_to_update is None:
+        flash("Movie not found in this user's list.", 'error')
+        return redirect(url_for('user_movies', user_id=user_id))
+
+    # --- Handle POST Request (Form Submission) ---
+    if request.method == 'POST':
+        new_title = request.form.get('new_title')
+
+        if not new_title:
+            flash("New title cannot be empty.", 'error')
+            return redirect(url_for('user_movies', user_id=user_id))
+
+        # Call DataManager to update the record
+        success = data_manager.update_movie(movie_id, new_title)
+
+        if success:
+            flash(f"Movie '{new_title}' updated successfully!", 'success')
+        else:
+            flash("Error updating movie.", 'error')
+
+        # Redirect back to the movie list
+        return redirect(url_for('user_movies', user_id=user_id))
+
+    # --- Handle GET Request (Display Form) ---
+    # If not a POST, render the form using the fetched movie data
+    return render_template('update_movie.html', user=user, movie=movie_to_update)
 
 @app.route('/users/<int:user_id>/movies/<int:movie_id>/delete', methods=['POST'])
 def delete_movie_on_user_list():
