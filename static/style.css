@@ -187,10 +187,10 @@ body {
     text-decoration: none;
     text-align: center;
     font-size: 0.9em;
-    width: 50%;
+    width: 100%;
     display: block;
 }
 .delete-form {
-    display: inline;
+    display: block;
     width: 50%;
 }
