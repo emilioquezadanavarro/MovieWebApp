@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Update Movie: {{ movie.name }}{% endblock %}
+
+{% block content %}
+    <p><a href="{{ url_for('user_movies', user_id=user.id) }}" class="back-link">← Back to {{ user.name }}'s Movies</a></p>
+
+    <!-- FLASH MESSAGE DISPLAY BLOCK -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="flashes {{ category }}">
+            <p>{{ message }}</p>
+        </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="user-layout-container">
+        <!-- Display Current Movie Details -->
+        <div class="user-list-section">
+            <h3 class="page-header">Editing: {{ movie.name }}</h3>
+            <p><strong>Year:</strong> {{ movie.year }}</p>
+            <p><strong>Director:</strong> {{ movie.director }}</p>
+            <p><strong>Poster:</strong></p>
+            <img src="{{ movie.poster_url }}" alt="{{ movie.name }} Poster" class="movie-poster" style="height: auto; max-width: 200px;">
+        </div>
+
+        <!-- Update Form Section -->
+        <div class="user-creation-section">
+            <h3 class="page-header">Change Title</h3>
+
+            <!-- Form targets the SAME URL/FUNCTION (Update route) using POST -->
+            <form method="POST" action="{{ url_for('update_movie_title_on_user_list', user_id=user.id, movie_id=movie.id) }}" class="form-container">
+
+                <div class="form-group">
+                    <label for="new_title" class="form-label">New Movie Title</label>
+                    <!-- Pre-filling the input field with the current value -->
+                    <input type="text"
+                           class="form-control"
+                           id="new_title"
+                           name="new_title"
+                           value="{{ movie.name }}"
+                           required>
+                </div>
+                <button type="submit" class="btn-primary">Save New Title</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
