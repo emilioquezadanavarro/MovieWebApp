@@ -215,7 +215,14 @@ def delete_movie_on_user_list(user_id, movie_id):
     # Redirect back to the movie list
     return redirect(url_for('user_movies', user_id=user_id))
 
+# Error Handlers
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
+@app.errorhandler(500)
+def internal_server_error(e):
+    return render_template('500.html'), 500
 
 # Creating the data base with ORM
 def create_database_tables():
