@@ -188,8 +188,34 @@ def update_movie_title_on_user_list(user_id, movie_id):
     return render_template('update_movie.html', user=user, movie=movie_to_update)
 
 @app.route('/users/<int:user_id>/movies/<int:movie_id>/delete', methods=['POST'])
-def delete_movie_on_user_list():
-    pass
+def delete_movie_on_user_list(user_id, movie_id):
+
+    # Fetch data for display (GET) or verification (POST)
+    user, movies = data_manager.get_movies(user_id)
+
+    if user is None:
+        flash("User not found", 'error')
+        return redirect(url_for('index'))
+
+    # Using next function to find the match and stops immediately. Otherwise, returns None
+    movie_to_delete = next((m for m in movies if m.id == movie_id), None)
+
+    if movie_to_delete is None:
+        flash("Movie not found in this user's list.", 'error')
+        return redirect(url_for('user_movies', user_id=user_id))
+
+
+    success = data_manager.delete_movie(movie_to_delete.id)
+
+    if success:
+            flash(f"Movie '{movie_to_delete.name}' was successfully deleted from {user.name}'s list!", 'success')
+    else:
+            flash("Error updating movie.", 'error')
+
+    # Redirect back to the movie list
+    return redirect(url_for('user_movies', user_id=user_id))
+
+
 
 # Creating the data base with ORM
 def create_database_tables():
