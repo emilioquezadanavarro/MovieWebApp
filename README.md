@@ -2,6 +2,8 @@
 
 This project is a complete, multi-user web application built with Python and Flask. It demonstrates the full lifecycle of data management, from user creation and external API fetching to secure database interactions and elegant front-end display. The project applies strong software engineering principles, including Separation of Concerns and robust error handling.
 
+<img width="1467" height="484" alt="Screenshot 2025-12-02 at 09 47 24" src="https://github.com/user-attachments/assets/afe46a35-1fd8-4934-9aef-b2b8fb558a67" />
+
 # ✨ Key Features
 
 - Multi-User Management: Users can be created and selected, and their data is isolated.
